@@ -22,40 +22,42 @@ namespace GameOfDrones.WebAPI.Controllers
         [HttpGet]
         public ActionResult GetAll()
         {
+            Game[] games;
             try
             {
-                IEnumerable<Game> games = _service.GetAll();
-                return Ok(games);
+                games = _service.GetAll().ToArray();
             }
             catch (Exception e)
             {
                 return StatusCode(500, e);
             }
+            return Ok(games);
         }
 
         [HttpGet("{id}", Name = "Get")]
         public ActionResult Get(int id)
         {
+            Game game;
             try
             {
-                Game game = _service.GetResults(id);
-                return Ok(game);
+                game = _service.GetResults(id);
+                
             }
             catch (Exception e)
             {
                 return StatusCode(500, e);
             }
-
+            return Ok(game);
         }
 
         public ActionResult Create([FromBody] Game game)
         {
+            Game gameResult;
             try
             {
                 if (game != null)
                 {
-                    var gameResult = _service.Add(game);
-                    return Ok(gameResult);
+                    gameResult = _service.Add(game);
                 }
                 else
                 {
@@ -66,6 +68,8 @@ namespace GameOfDrones.WebAPI.Controllers
             {
                 return StatusCode(500, e);
             }
+
+            return Ok(gameResult);
         }
     }
 }

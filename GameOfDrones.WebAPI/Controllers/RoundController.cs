@@ -13,26 +13,63 @@ namespace GameOfDrones.WebAPI.Controllers
     [Route("api/Round")]
     public class RoundController : Controller
     {
-        private IRoundService _roundService;
+        private IRoundService _service;
 
         public RoundController(IRoundService roundService)
         {
-            _roundService = roundService;
+            _service = roundService;
         }
 
         public ActionResult Get()
         {
-            return Ok(_roundService.GetAll());
+            Round[] roundResult;
+            try
+            {
+                roundResult = _service.GetAll().ToArray();
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
+
+            return Ok(roundResult);
         }
 
         public ActionResult Get(int id)
         {
-            return Ok(_roundService.GetById(id));
+            Round roundResult;
+            try
+            {
+                roundResult = _service.GetById(id);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
+
+            return Ok(roundResult);
         }
 
         public ActionResult Post([FromBody] Round round)
         {
-            return Ok(_roundService.AddWithWinner(round));    
+            Round roundResult;
+            try
+            {
+                if (round != null)
+                {
+                    roundResult = _service.Add(round);
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
+
+            return Ok(roundResult);
         }
 
     }

@@ -15,7 +15,12 @@ namespace GameOfDrones.Services
 
         public Game GetResults(int gameId)
         {
-            Game game = _gameRepository.GetById(gameId);
+            Game game =  _gameRepository.FindBy(
+                            g => g.GameId == gameId,
+                            g => g.Players,
+                            g => g.Rounds)
+                                .FirstOrDefault();
+
             CheckWinner(game);
 
             return game;
@@ -25,7 +30,7 @@ namespace GameOfDrones.Services
         {
             foreach (Player p in game.Players)
             {
-                if (game.Rounds.Count(r => r.WinnerPlayerId == p.PlayerId) >= GameConfig.WIN_LIMIT)
+                if (game.Rounds != null && game.Rounds.Count(r => r.WinnerPlayerId == p.PlayerId) >= GameConfig.WIN_LIMIT)
                     p.Winner = true;
             }
         }

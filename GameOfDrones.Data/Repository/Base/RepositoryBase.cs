@@ -3,12 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace GameOfDrones.Data
 {
-    public class RepositoryBase<TEntity> : IDisposable, IRepositoryBase<TEntity> where TEntity : class, IModel
+    public class RepositoryBase<TEntity> : IDisposable, IRepositoryBase<TEntity> where TEntity : class
     {
         protected IDbContext Db;
         public RepositoryBase(IDbContext _db)
@@ -51,17 +52,25 @@ namespace GameOfDrones.Data
             return Db.Set<TEntity>().Find(id);
         }
 
-        public TEntity GetById<TProperty>(int id, params Func<TEntity, TProperty>[] properties)
+        public TEntity GetById(int id, params string[] properties)
         {
             var dbSet = Db.Set<TEntity>();
             properties.ToList()
                 .ForEach(func =>
                   {
-                      dbSet.Include(f => func);
+                      dbSet.Include(func);
                   }      
                 );
 
-            return dbSet.SingleOrDefault(t => t.Id == id);
+            return dbSet.Find(id);
+        }
+
+        public IEnumerable<TEntity> FindBy(Expression<Func<TEntity, bool>> where, params Expression<Func<TEntity, object>>[] includes)
+        {
+            var query = Db.Set<TEntity>().Where(where);
+
+            return includes.Aggregate(query, (current, includeProperty) => current.Include(includeProperty))
+                    .ToList(); 
         }
 
         public void Remove(TEntity obj)

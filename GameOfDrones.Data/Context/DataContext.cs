@@ -25,9 +25,11 @@ namespace GameOfDrones.Data
         {
             modelBuilder.ApplyConfiguration(new GameMap());
             modelBuilder.ApplyConfiguration(new MoveMap());
+            modelBuilder.ApplyConfiguration(new PlayerMap());
             modelBuilder.ApplyConfiguration(new PlayerMoveMap());
             modelBuilder.ApplyConfiguration(new RoundMap());
         }
+
 
 
     }

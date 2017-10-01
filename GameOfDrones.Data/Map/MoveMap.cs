@@ -11,7 +11,10 @@ namespace GameOfDrones.Data
     {
         public void Configure(EntityTypeBuilder<Move> builder)
         {
-            builder.HasOne(s => s.Kills)
+            // Relationships
+
+            builder.
+                HasOne(s => s.Kills)
                 .WithMany()
                 .HasForeignKey(f => f.KillsMoveId);
         }

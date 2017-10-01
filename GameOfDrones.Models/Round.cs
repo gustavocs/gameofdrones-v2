@@ -1,20 +1,20 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace GameOfDrones.Models
 {
-    public class Round : IModel
+    public class Round 
     {
-        public int Id { get; set; }
-
         public int RoundId { get; set; }
 
         public int? WinnerPlayerId { get; set; }
         public Player Winner { get; set; }
 
-        public int GameId { get; set; }
+        [JsonIgnore]
         public Game Game { get; set; }
+        public int GameId { get; set; }
 
         public ICollection<PlayerMove> Moves { get; set; }
 

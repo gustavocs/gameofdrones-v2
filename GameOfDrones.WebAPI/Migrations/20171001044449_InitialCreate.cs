@@ -48,7 +48,7 @@ namespace GameOfDrones.WebAPI.Migrations
                     PlayerId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     GameId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Number = table.Column<byte>(type: "tinyint", nullable: false),
                     Winner = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -70,7 +70,6 @@ namespace GameOfDrones.WebAPI.Migrations
                     RoundId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     GameId = table.Column<int>(type: "int", nullable: false),
-                    GameId1 = table.Column<int>(type: "int", nullable: true),
                     WinnerPlayerId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -82,12 +81,6 @@ namespace GameOfDrones.WebAPI.Migrations
                         principalTable: "Game",
                         principalColumn: "GameId",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Round_Game_GameId1",
-                        column: x => x.GameId1,
-                        principalTable: "Game",
-                        principalColumn: "GameId",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Round_Player_WinnerPlayerId",
                         column: x => x.WinnerPlayerId,
@@ -102,8 +95,8 @@ namespace GameOfDrones.WebAPI.Migrations
                 {
                     PlayerMoveId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    MoveId = table.Column<int>(type: "int", nullable: true),
-                    PlayerId = table.Column<int>(type: "int", nullable: true),
+                    MoveId = table.Column<int>(type: "int", nullable: false),
+                    PlayerId = table.Column<int>(type: "int", nullable: false),
                     RoundId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -114,13 +107,13 @@ namespace GameOfDrones.WebAPI.Migrations
                         column: x => x.MoveId,
                         principalTable: "Move",
                         principalColumn: "MoveId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PlayerMove_Player_PlayerId",
                         column: x => x.PlayerId,
                         principalTable: "Player",
                         principalColumn: "PlayerId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PlayerMove_Round_RoundId",
                         column: x => x.RoundId,
@@ -158,11 +151,6 @@ namespace GameOfDrones.WebAPI.Migrations
                 name: "IX_Round_GameId",
                 table: "Round",
                 column: "GameId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Round_GameId1",
-                table: "Round",
-                column: "GameId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Round_WinnerPlayerId",

@@ -11,11 +11,20 @@ namespace GameOfDrones.Data
     {
         public void Configure(EntityTypeBuilder<Game> builder)
         {
-            builder.HasMany(s => s.Players)
-                .WithOne(p => p.Game);
+            // Relationships
 
-            builder.HasMany(s => s.Rounds)
-                .WithOne(p => p.Game);
+            builder.
+                HasMany(p => p.Players)
+                .WithOne(p => p.Game)
+                .HasForeignKey(p => p.GameId)
+                .IsRequired();
+
+            builder.
+                HasMany(s => s.Rounds)
+                .WithOne(p => p.Game)
+                .HasForeignKey(p => p.GameId)
+                .IsRequired();
+
         }
     }
 }

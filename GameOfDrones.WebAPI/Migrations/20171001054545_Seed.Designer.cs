@@ -11,8 +11,8 @@ using System;
 namespace GameOfDrones.WebAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20170928180104_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20171001054545_Seed")]
+    partial class Seed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -54,7 +54,8 @@ namespace GameOfDrones.WebAPI.Migrations
 
                     b.Property<int>("GameId");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.Property<byte>("Number");
 
@@ -72,9 +73,11 @@ namespace GameOfDrones.WebAPI.Migrations
                     b.Property<int>("PlayerMoveId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("MoveId");
+                    b.Property<int?>("MoveId")
+                        .IsRequired();
 
-                    b.Property<int?>("PlayerId");
+                    b.Property<int?>("PlayerId")
+                        .IsRequired();
 
                     b.Property<int?>("RoundId");
 
@@ -96,15 +99,11 @@ namespace GameOfDrones.WebAPI.Migrations
 
                     b.Property<int>("GameId");
 
-                    b.Property<int?>("GameId1");
-
                     b.Property<int?>("WinnerPlayerId");
 
                     b.HasKey("RoundId");
 
                     b.HasIndex("GameId");
-
-                    b.HasIndex("GameId1");
 
                     b.HasIndex("WinnerPlayerId");
 
@@ -130,11 +129,13 @@ namespace GameOfDrones.WebAPI.Migrations
                 {
                     b.HasOne("GameOfDrones.Models.Move", "Move")
                         .WithMany()
-                        .HasForeignKey("MoveId");
+                        .HasForeignKey("MoveId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("GameOfDrones.Models.Player", "Player")
                         .WithMany()
-                        .HasForeignKey("PlayerId");
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("GameOfDrones.Models.Round")
                         .WithMany("Moves")
@@ -144,13 +145,9 @@ namespace GameOfDrones.WebAPI.Migrations
             modelBuilder.Entity("GameOfDrones.Models.Round", b =>
                 {
                     b.HasOne("GameOfDrones.Models.Game", "Game")
-                        .WithMany()
+                        .WithMany("Rounds")
                         .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("GameOfDrones.Models.Game")
-                        .WithMany("Rounds")
-                        .HasForeignKey("GameId1");
 
                     b.HasOne("GameOfDrones.Models.Player", "Winner")
                         .WithMany()
