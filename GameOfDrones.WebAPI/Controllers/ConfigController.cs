@@ -20,6 +20,7 @@ namespace GameOfDrones.WebAPI.Controllers
             _service = service;
         }
 
+        [HttpGet]
         public ActionResult Get()
         {
             GameConfig configResult;
@@ -31,11 +32,12 @@ namespace GameOfDrones.WebAPI.Controllers
             {
                 return StatusCode(500, e);
             }
-            return Ok();
+            return Ok(configResult);
         }
 
         // PUT api/values/5
-        public ActionResult Post([FromBody] GameConfig config)
+        [HttpPut]
+        public ActionResult Update([FromBody] GameConfig config)
         {
             try
             {

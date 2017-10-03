@@ -10,8 +10,7 @@ namespace GameOfDrones.Services
 {
     public class MoveService : ServiceBase<Move>, IMoveService
     {
-        private readonly IRepositoryBase<Move> _moveRepository;
-        public MoveService(IRepositoryBase<Move> repository) : base(repository) { _moveRepository = repository; }
+        public MoveService(IRepositoryBase<Move> repository) : base(repository) { }
 
         public bool Kills(int moveId, int killsMoveId)
         {

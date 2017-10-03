@@ -46,23 +46,17 @@ namespace GameOfDrones.Data
             return Db.Set<TEntity>().ToList();
         }
 
+        public IEnumerable<TEntity> GetAll(params Expression<Func<TEntity, object>>[] includes)
+        {
+            var query = Db.Set<TEntity>().AsQueryable();
+
+            return includes.Aggregate(query, (current, includeProperty) => current.Include(includeProperty))
+                    .ToList();
+        }
 
         public TEntity GetById(int id)
         {
             return Db.Set<TEntity>().Find(id);
-        }
-
-        public TEntity GetById(int id, params string[] properties)
-        {
-            var dbSet = Db.Set<TEntity>();
-            properties.ToList()
-                .ForEach(func =>
-                  {
-                      dbSet.Include(func);
-                  }      
-                );
-
-            return dbSet.Find(id);
         }
 
         public IEnumerable<TEntity> FindBy(Expression<Func<TEntity, bool>> where, params Expression<Func<TEntity, object>>[] includes)

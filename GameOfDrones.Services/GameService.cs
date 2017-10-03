@@ -15,24 +15,56 @@ namespace GameOfDrones.Services
 
         public Game GetResults(int gameId)
         {
-            Game game =  _gameRepository.FindBy(
+            var game = _gameRepository.FindBy(
                             g => g.GameId == gameId,
                             g => g.Players,
                             g => g.Rounds)
                                 .FirstOrDefault();
 
-            CheckWinner(game);
+            return game;
+        }
+
+        public Player GetWinner(int gameId)
+        {
+            var winnerPlayer = _gameRepository.FindBy(
+                                    g => g.GameId == gameId,
+                                    g => g.WinnerPlayer)
+                                            .FirstOrDefault();
+
+            return winnerPlayer?.WinnerPlayer;
+        }
+
+        public Game UpdateResults(int gameId)
+        {
+            var game = _gameRepository.FindBy(
+                            g => g.GameId == gameId,
+                            g => g.Rounds,
+                            g => g.Players)
+                                .FirstOrDefault();
+
+            if (game != null)
+            {
+                game.WinnerPlayerId = CheckWinner(game);
+                if (game.WinnerPlayerId.HasValue)
+                {
+                    Update(game);
+                }
+            }
 
             return game;
         }
 
-        public void CheckWinner(Game game)
+        private int? CheckWinner(Game game)
         {
             foreach (Player p in game.Players)
             {
                 if (game.Rounds != null && game.Rounds.Count(r => r.WinnerPlayerId == p.PlayerId) >= GameConfig.WIN_LIMIT)
+                {
                     p.Winner = true;
+                    return p.PlayerId;
+                }
             }
+            return null;
         }
     }
 }

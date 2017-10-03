@@ -1,6 +1,7 @@
 ﻿using GameOfDrones.Data;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace GameOfDrones.Services
@@ -26,7 +27,10 @@ namespace GameOfDrones.Services
         {
             return _repository.GetAll();
         }
-
+        public IEnumerable<TEntity> GetAll(params Expression<Func<TEntity, object>>[] includes)
+        {
+            return _repository.GetAll(includes);
+        }
         public TEntity GetById(int id)
         {
             return _repository.GetById(id);

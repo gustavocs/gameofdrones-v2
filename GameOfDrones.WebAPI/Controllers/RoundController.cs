@@ -20,6 +20,7 @@ namespace GameOfDrones.WebAPI.Controllers
             _service = roundService;
         }
 
+        [HttpGet]
         public ActionResult Get()
         {
             Round[] roundResult;
@@ -35,6 +36,7 @@ namespace GameOfDrones.WebAPI.Controllers
             return Ok(roundResult);
         }
 
+        [HttpGet("{id}", Name = "GetRound")]
         public ActionResult Get(int id)
         {
             Round roundResult;
@@ -50,14 +52,14 @@ namespace GameOfDrones.WebAPI.Controllers
             return Ok(roundResult);
         }
 
-        public ActionResult Post([FromBody] Round round)
+        public ActionResult Create([FromBody] Round round)
         {
             Round roundResult;
             try
             {
                 if (round != null)
                 {
-                    roundResult = _service.Add(round);
+                    roundResult = _service.AddWithWinner(round);
                 }
                 else
                 {

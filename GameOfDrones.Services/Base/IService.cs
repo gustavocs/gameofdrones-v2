@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace GameOfDrones.Services
@@ -8,6 +9,7 @@ namespace GameOfDrones.Services
     {
         TEntity Add(TEntity obj);
         IEnumerable<TEntity> GetAll();
+        IEnumerable<TEntity> GetAll(params Expression<Func<TEntity, object>>[] includes);
         TEntity GetById(int id);
         void Remove(TEntity obj);
         TEntity Update(TEntity obj);

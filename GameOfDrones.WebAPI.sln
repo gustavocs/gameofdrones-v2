@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameOfDrones.Data", "GameOf
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameOfDrones.Services", "GameOfDrones.Services\GameOfDrones.Services.csproj", "{B77D121E-AD3F-4A5B-8416-19879A0A3AC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameOfDrones.WebAPI", "GameOfDrones.WebAPI\GameOfDrones.WebAPI.csproj", "{09501034-9560-41A7-AEFA-0064C8E246A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameOfDrones.WebAPI", "GameOfDrones.WebAPI\GameOfDrones.WebAPI.csproj", "{09501034-9560-41A7-AEFA-0064C8E246A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

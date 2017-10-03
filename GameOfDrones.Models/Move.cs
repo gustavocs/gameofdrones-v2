@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -10,6 +11,8 @@ namespace GameOfDrones.Models
         public string Name { get; set; }
 
         public int? KillsMoveId { get; set; }
+
+        [JsonIgnore]
         public Move Kills { get; set; }
     }
 }

@@ -37,10 +37,12 @@ namespace GameOfDrones.WebAPI
             services.AddTransient<IGameService, GameService>();
             services.AddTransient<IRoundService, RoundService>();
             services.AddTransient<IMoveService, MoveService>();
+            services.AddTransient<IConfigService, ConfigService>();
 
-            services.AddScoped<IRepositoryBase<Game>, GameRepository>();
-            services.AddScoped<IRepositoryBase<Player>, PlayerRepository>();
-            services.AddScoped<IRepositoryBase<Round>, RoundRepository>();
+            services.AddScoped<IRepositoryBase<Game>, RepositoryBase<Game>>();
+            services.AddScoped<IRepositoryBase<Player>, RepositoryBase<Player>>();
+            services.AddScoped<IRepositoryBase<Round>, RepositoryBase<Round>>();
+            services.AddScoped<IRepositoryBase<Move>, RepositoryBase<Move>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

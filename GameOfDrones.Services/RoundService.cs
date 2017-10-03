@@ -10,15 +10,38 @@ namespace GameOfDrones.Services
 {
     public class RoundService : ServiceBase<Round>, IRoundService
     {
+        private IGameService _gameService;
         private IMoveService _moveService;
-        public RoundService(IRepositoryBase<Round> repository, IMoveService moveService) : base(repository) { _moveService = moveService; }
+
+        public RoundService(IRepositoryBase<Round> repository, 
+            IMoveService moveService,
+            IGameService gameService) 
+                : base(repository)
+        {
+            _gameService = gameService;
+            _moveService = moveService;
+        }
 
 
         public Round AddWithWinner(Round round)
         {
-            round.WinnerPlayerId = CheckRoundWinner(round);
-            return _repository.Add(round);
+            Round roundResult;
+            if (_gameService.GetWinner(round.GameId) == null)
+            {
+
+                round.WinnerPlayerId = CheckRoundWinner(round);
+                roundResult = _repository.Add(round);
+
+                _gameService.UpdateResults(round.GameId);
+            }
+            else
+            {
+                throw new Exception("This game has already finished!");
+            }
+        
+            return roundResult;
         }
+
 
         private int? CheckRoundWinner(Round round)
         {

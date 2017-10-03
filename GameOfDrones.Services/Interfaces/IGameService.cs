@@ -5,6 +5,7 @@ namespace GameOfDrones.Services
     public interface IGameService : IService<Game>
     {
         Game GetResults(int gameId);
-        void CheckWinner(Game game);
+        Game UpdateResults(int gameId);
+        Player GetWinner(int gameId);
     }
 }

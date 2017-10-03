@@ -25,6 +25,11 @@ namespace GameOfDrones.Data
                 .HasForeignKey(p => p.GameId)
                 .IsRequired();
 
+            builder.
+                HasOne(p => p.WinnerPlayer)
+                .WithMany()
+                .HasForeignKey(p => p.WinnerPlayerId);
+
         }
     }
 }

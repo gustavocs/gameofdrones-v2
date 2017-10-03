@@ -25,7 +25,7 @@ namespace GameOfDrones.WebAPI.Controllers
             Game[] games;
             try
             {
-                games = _service.GetAll().ToArray();
+                games = _service.GetAll(g => g.Players, g => g.Rounds).ToArray();
             }
             catch (Exception e)
             {
