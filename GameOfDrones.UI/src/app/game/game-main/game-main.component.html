@@ -1,0 +1,14 @@
+<form name="newGameForm" class="form" role="form" (ngSubmit)="onSubmit()" #gameForm="ngForm">
+    <h3 class="page-header">
+        Enter players name:
+    </h3>
+    <div *ngFor="let player of currentGame.players">
+      <app-game-player [player]="player"></app-game-player>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 text-right" >
+            <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+        </div>
+    </div>
+</form>
