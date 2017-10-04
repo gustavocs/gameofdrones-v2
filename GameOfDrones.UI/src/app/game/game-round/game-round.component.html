@@ -1,0 +1,31 @@
+<form ng-if="Game != null" name="roundForm" class="form ng-pristine ng-valid" role="form" ng-submit="submitMove()" novalidate>
+    <h2>
+        Round {{ roundNumber }}
+    </h2>
+
+    <h3 class="page-header">
+        Player.Name
+    </h3>
+    <div class="row">
+        <div class="col-md-2"><label>Select move:</label></div>
+        <div class="col-md-4">
+            <div class="form-group" ng-class="{ 'has-error': roundForm.selectedMove.move.$touched && roundForm.selectedMove.move.$invalid }">
+                <select name="selectedMove.move" class="form-control" ng-model="selectedMove.move" ng-options="option.Name for option in moves track by option.MoveId" required>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="help-block" ng-messages="roundForm.selectedMove.move.$error" ng-if="roundForm.selectedMove.move.$touched">
+                <p ng-message="required">
+                    You must choose a move!
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 text-right">
+            <button type="submit" class="btn btn-primary btn-lg" ng-disabled="roundForm.$invalid">Submit</button>
+        </div>
+    </div>
+    {{ moveId }}
+</form>

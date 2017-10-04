@@ -29,6 +29,7 @@ namespace GameOfDrones.WebAPI
         {
             var connection = Configuration["DbConnectionString"];
 
+            services.AddCors();
             services.AddMvc();
 
             services.AddDbContext<DataContext>(options => options.UseSqlServer(connection, b => b.MigrationsAssembly("GameOfDrones.WebAPI")));
@@ -52,6 +53,11 @@ namespace GameOfDrones.WebAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(builder =>
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader());
 
             app.UseMvc();
         }

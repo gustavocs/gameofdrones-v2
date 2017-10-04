@@ -1,8 +1,7 @@
 import { IPlayer } from './../interfaces/IPlayer';
 
-export class Player implements IPlayer
-{
-	constructor(number: number) {
+export class Player implements IPlayer{
+    constructor(number: number) {
         this.number = number;
     }
 
