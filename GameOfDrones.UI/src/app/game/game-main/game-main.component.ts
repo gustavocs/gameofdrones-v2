@@ -3,46 +3,47 @@ import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
 
-import { GameService } from './../game.service';
+import { GameService } from './../services/game.service';
 import { Game } from './../../../models/Game';
 import { Player } from './../../../models/Player';
 
 @Component({
-  providers: [ GameService ],
-  selector: 'app-game-main',
-  templateUrl: './game-main.component.html',
-  styleUrls: ['./game-main.component.scss']
+	providers: [ GameService ],
+	selector: 'app-game-main',
+	templateUrl: './game-main.component.html',
+	styleUrls: ['./game-main.component.scss']
 })
 export class GameMainComponent implements OnInit, OnDestroy {
-  currentGame: Game;
+	currentGame: Game;
 
-  constructor(private router: Router, private gameService: GameService) { }
+	constructor(private router: Router, private gameService: GameService) { }
 
-  ngOnInit() {
-    this.initPlayers();
-  }
-  ngOnDestroy() {
-  }
+	ngOnInit() {
+		this.initPlayers();
+	}
 
-  onSubmit() {
-    this.gameService
-      .newGame(this.currentGame)
-      .subscribe(
-        game => {
-           this.currentGame = game.json();
-           this.router.navigate(['Game/Round/:id', { id: this.currentGame.id }]);
-        },
-        error => {
-          console.log(error);
-       });
-  }
+	ngOnDestroy() {
+	}
 
-  private initPlayers() {
-    this.currentGame = new Game();
-    this.currentGame.players = new Array<Player>();
+	onSubmit() {
+		this.gameService
+			.newGame(this.currentGame)
+				.subscribe(
+					game => {
+						this.currentGame = game.json();
+						this.router.navigate(['Game', this.currentGame.gameId, 'Round']);
+					},
+					error => {
+						console.log(error);
+				});
+		}
 
-    this.currentGame.players.push(new Player(1));
-    this.currentGame.players.push(new Player(2));
-  }
+	private initPlayers() {
+		this.currentGame = new Game();
+		this.currentGame.players = new Array<Player>();
+
+		this.currentGame.players.push(new Player(1));
+		this.currentGame.players.push(new Player(2));
+	}
 
 }

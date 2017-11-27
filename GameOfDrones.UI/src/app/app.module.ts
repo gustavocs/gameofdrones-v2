@@ -11,7 +11,8 @@ import { GameMainComponent } from './game/game-main/game-main.component';
 import { GamePlayerComponent } from './game/game-player/game-player.component';
 import { GameRoundComponent } from './game/game-round/game-round.component';
 
-import { GameService } from './game/game.service';
+import { GameService } from './game/services/game.service';
+import { GameRoundMoveComponent } from './game/game-round-move/game-round-move.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { GameService } from './game/game.service';
     TopNavComponent,
     GameMainComponent,
     GamePlayerComponent,
-    GameRoundComponent
+    GameRoundComponent,
+    GameRoundMoveComponent
   ],
   imports: [
     BrowserModule,

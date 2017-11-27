@@ -54,7 +54,7 @@ namespace GameOfDrones.WebAPI.Controllers
 
         public ActionResult Create([FromBody] Round round)
         {
-            Round roundResult;
+            Player roundResult;
             try
             {
                 if (round != null)
