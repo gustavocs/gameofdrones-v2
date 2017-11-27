@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { Observable } from 'Rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import { GameService } from './../game.service';
 
 import { Game } from './../../../models/Game';
