@@ -11,22 +11,26 @@ using System;
 namespace GameOfDrones.WebAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20171001044449_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20171127033226_Seed")]
+    partial class Seed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.0.0-rtm-26452")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
+                .HasAnnotation("ProductVersion", "2.0.0-rtm-26452");
 
             modelBuilder.Entity("GameOfDrones.Models.Game", b =>
                 {
                     b.Property<int>("GameId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int?>("WinnerPlayerId");
+
                     b.HasKey("GameId");
+
+                    b.HasIndex("WinnerPlayerId");
 
                     b.ToTable("Game");
                 });
@@ -108,6 +112,13 @@ namespace GameOfDrones.WebAPI.Migrations
                     b.HasIndex("WinnerPlayerId");
 
                     b.ToTable("Round");
+                });
+
+            modelBuilder.Entity("GameOfDrones.Models.Game", b =>
+                {
+                    b.HasOne("GameOfDrones.Models.Player", "WinnerPlayer")
+                        .WithMany()
+                        .HasForeignKey("WinnerPlayerId");
                 });
 
             modelBuilder.Entity("GameOfDrones.Models.Move", b =>

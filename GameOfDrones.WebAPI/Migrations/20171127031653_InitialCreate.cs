@@ -10,25 +10,13 @@ namespace GameOfDrones.WebAPI.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Game",
-                columns: table => new
-                {
-                    GameId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Game", x => x.GameId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Move",
                 columns: table => new
                 {
-                    MoveId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    KillsMoveId = table.Column<int>(type: "int", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    MoveId = table.Column<int>(type: "int4", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    KillsMoveId = table.Column<int>(type: "int4", nullable: true),
+                    Name = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -45,32 +33,45 @@ namespace GameOfDrones.WebAPI.Migrations
                 name: "Player",
                 columns: table => new
                 {
-                    PlayerId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    GameId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Number = table.Column<byte>(type: "tinyint", nullable: false),
-                    Winner = table.Column<bool>(type: "bit", nullable: false)
+                    PlayerId = table.Column<int>(type: "int4", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    GameId = table.Column<int>(type: "int4", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Number = table.Column<byte>(type: "int2", nullable: false),
+                    Winner = table.Column<bool>(type: "bool", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Player", x => x.PlayerId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Game",
+                columns: table => new
+                {
+                    GameId = table.Column<int>(type: "int4", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    WinnerPlayerId = table.Column<int>(type: "int4", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Game", x => x.GameId);
                     table.ForeignKey(
-                        name: "FK_Player_Game_GameId",
-                        column: x => x.GameId,
-                        principalTable: "Game",
-                        principalColumn: "GameId",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_Game_Player_WinnerPlayerId",
+                        column: x => x.WinnerPlayerId,
+                        principalTable: "Player",
+                        principalColumn: "PlayerId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Round",
                 columns: table => new
                 {
-                    RoundId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    GameId = table.Column<int>(type: "int", nullable: false),
-                    WinnerPlayerId = table.Column<int>(type: "int", nullable: true)
+                    RoundId = table.Column<int>(type: "int4", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    GameId = table.Column<int>(type: "int4", nullable: false),
+                    WinnerPlayerId = table.Column<int>(type: "int4", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -93,11 +94,11 @@ namespace GameOfDrones.WebAPI.Migrations
                 name: "PlayerMove",
                 columns: table => new
                 {
-                    PlayerMoveId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    MoveId = table.Column<int>(type: "int", nullable: false),
-                    PlayerId = table.Column<int>(type: "int", nullable: false),
-                    RoundId = table.Column<int>(type: "int", nullable: true)
+                    PlayerMoveId = table.Column<int>(type: "int4", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    MoveId = table.Column<int>(type: "int4", nullable: false),
+                    PlayerId = table.Column<int>(type: "int4", nullable: false),
+                    RoundId = table.Column<int>(type: "int4", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -121,6 +122,11 @@ namespace GameOfDrones.WebAPI.Migrations
                         principalColumn: "RoundId",
                         onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Game_WinnerPlayerId",
+                table: "Game",
+                column: "WinnerPlayerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Move_KillsMoveId",
@@ -156,10 +162,22 @@ namespace GameOfDrones.WebAPI.Migrations
                 name: "IX_Round_WinnerPlayerId",
                 table: "Round",
                 column: "WinnerPlayerId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Player_Game_GameId",
+                table: "Player",
+                column: "GameId",
+                principalTable: "Game",
+                principalColumn: "GameId",
+                onDelete: ReferentialAction.Cascade);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Game_Player_WinnerPlayerId",
+                table: "Game");
+
             migrationBuilder.DropTable(
                 name: "PlayerMove");
 
