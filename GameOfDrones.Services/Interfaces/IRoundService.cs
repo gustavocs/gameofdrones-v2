@@ -4,6 +4,6 @@ namespace GameOfDrones.Services
 {
     public interface IRoundService : IService<Round>
     {
-        Round AddWithWinner(Round round);
+        Player AddWithWinner(Round round);
     }
 }

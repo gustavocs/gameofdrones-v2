@@ -1,0 +1,30 @@
+<h3 class="page-header">
+				<div *ngIf="currentMove">
+        	{{ currentMove.player.name  }}
+				</div>
+    </h3>
+    <div class="row">
+        <div class="col-md-2"><label>Select move:</label></div>
+        <div class="col-md-4">
+            <div class="form-group">
+								<select class="form-control" (ngModelChange)="onModelChange($event)" [ngModel]="selectedMove" #move="ngModel">
+									<option *ngFor="let move of moves | async" [ngValue]="move">
+											{{ move.name }}
+									</option>
+							</select>
+            </div>
+        </div>
+				<div class="col-md-6">
+							<div *ngIf="move && move.invalid && (move.dirty || move.touched)"
+									class="alert alert-danger fade in">
+								<div *ngIf="move.errors.required">
+									You must choose a move.
+								</div>
+							</div>
+					</div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 text-right">
+            <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+        </div>
+    </div>

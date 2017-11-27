@@ -1,8 +1,8 @@
 
-const baseUrl = 'http://localhost:54852/api/';
+const baseUrl = 'http://localhost/GameOfDronesAPI/api/';
 
 export const WEB_API = {
-    GAME: baseUrl + 'Game',
-    CONFIG: baseUrl + 'Config',
-    ROUND: baseUrl + 'Round'
+	GAME: baseUrl + 'Game/',
+	CONFIG: baseUrl + 'Config/',
+	ROUND: baseUrl + 'Round/'
 }

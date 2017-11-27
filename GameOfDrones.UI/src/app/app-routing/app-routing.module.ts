@@ -5,14 +5,14 @@ import { GameRoundComponent } from '../game/game-round/game-round.component';
 
 const routes: Routes =
 [
-  { path: '', pathMatch: 'full', component: GameMainComponent },
-  { path: 'Game/New', pathMatch: 'full', component: GameMainComponent },
-  { path: 'Game/Round/:id', pathMatch: 'full', component: GameRoundComponent }
+	{ path: '', pathMatch: 'full', redirectTo: 'Game/New' },
+	{ path: 'Game/New', pathMatch: 'full', component: GameMainComponent },
+	{ path: 'Game/:id/Round', pathMatch: 'full', component: GameRoundComponent }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
-  declarations: []
+	imports: [RouterModule.forRoot(routes)],
+	exports: [RouterModule],
+	declarations: []
 })
 export class RoutingModule { }
