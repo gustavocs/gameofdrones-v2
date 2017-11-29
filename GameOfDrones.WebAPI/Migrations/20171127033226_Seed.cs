@@ -10,13 +10,13 @@ namespace GameOfDrones.WebAPI.Migrations
         {
             string[] columns = new string[3] { "MoveId", "Name", "KillsMoveId" };
 
-            migrationBuilder.Sql("ALTER TABLE \"Move\" DISABLE TRIGGER ALL");
+            migrationBuilder.InsertData("Move", columns, new object[3] { 1, "Paper", 1 });
+            migrationBuilder.InsertData("Move", columns, new object[3] { 2, "Scissors", 2 });
+            migrationBuilder.InsertData("Move", columns, new object[3] { 3, "Rock", 3 });
 
-            migrationBuilder.InsertData("Move", columns, new object[3] { 1, "Paper", 3 });
-            migrationBuilder.InsertData("Move", columns, new object[3] { 2, "Scissors", 1 });
-            migrationBuilder.InsertData("Move", columns, new object[3] { 3, "Rock", 2 });
-
-            migrationBuilder.Sql("ALTER TABLE \"Move\" ENABLE TRIGGER ALL");
+						migrationBuilder.UpdateData("Move", "MoveId", 1, "KillsMoveId",  3);
+						migrationBuilder.UpdateData("Move", "MoveId", 2, "KillsMoveId",  1);
+						migrationBuilder.UpdateData("Move", "MoveId", 3, "KillsMoveId",  2);
             
         }
 
