@@ -76,7 +76,7 @@ import { PlayerMove } from './../../../models/PlayerMove';
 					if (player) {
 						console.log(this.currentGame.players.find(g => g.playerId === player.playerId ));
 						if (player.winner) {
-							// finish game
+							this.router.navigate(['Game', this.currentGame.gameId, 'Winner']);
 						} else {
 						this.setNewRound();
 					} } else {

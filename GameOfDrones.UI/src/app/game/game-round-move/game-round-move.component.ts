@@ -32,7 +32,6 @@ export class GameRoundMoveComponent implements OnInit {
 
 	ngOnInit() {
 		this.moves = this.service.getConfig()
-			.scan((acc,value) => acc.concat(new Move()))
 			.switchMap(res => Observable.from(res.json().moves))
 			.toArray<Move>();
 	}
