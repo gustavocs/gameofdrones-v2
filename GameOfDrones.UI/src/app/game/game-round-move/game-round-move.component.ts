@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChange  } from '@angular/core';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
@@ -32,8 +32,12 @@ export class GameRoundMoveComponent implements OnInit {
 
 	ngOnInit() {
 		this.moves = this.service.getConfig()
+			.scan((acc,value) => acc.concat(new Move()))
 			.switchMap(res => Observable.from(res.json().moves))
 			.toArray<Move>();
+	}
+	ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
+		this.selectedMove = null;
 	}
 	onModelChange(selectedMove: any){
 		this.selectedMoveUpdate.emit(selectedMove);

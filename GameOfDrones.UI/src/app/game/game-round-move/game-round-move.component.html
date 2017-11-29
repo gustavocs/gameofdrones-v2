@@ -7,7 +7,7 @@
         <div class="col-md-2"><label>Select move:</label></div>
         <div class="col-md-4">
             <div class="form-group">
-								<select class="form-control" (ngModelChange)="onModelChange($event)" [ngModel]="selectedMove" #move="ngModel">
+								<select class="form-control" (ngModelChange)="onModelChange($event)" [(ngModel)]="selectedMove" #move="ngModel">
 									<option *ngFor="let move of moves | async" [ngValue]="move">
 											{{ move.name }}
 									</option>

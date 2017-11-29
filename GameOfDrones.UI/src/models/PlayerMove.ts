@@ -9,8 +9,11 @@ export class PlayerMove {
 
 	player: Player;
 	move: Move;
-
-	constructor(player: Player) {
+	constructor(player: Player, roundId?: number, playerId?: string, moveId?: number) {
 		this.player = player;
-	}
+
+		this.roundId = roundId;
+		this.playerId = playerId;
+		this.moveId = moveId;
+	 }
 }

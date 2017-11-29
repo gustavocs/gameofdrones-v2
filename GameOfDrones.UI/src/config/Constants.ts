@@ -1,4 +1,4 @@
-const baseUrl = 'http://localhost:54853/api/';
+const baseUrl = 'http://localhost:5000/api/';
 
 export const WEB_API = {
 	GAME: baseUrl + 'Game/',

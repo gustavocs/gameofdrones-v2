@@ -25,20 +25,24 @@ namespace GameOfDrones.Services
 
         public Player AddWithWinner(Round round)
         {
-            Player winnerPlayer;
+            Player winnerPlayer = new Player();
 
             if (_gameService.GetWinner(round.GameId) == null)
             {
-                winnerPlayer = CheckRoundWinner(round);
+                var winnerPlayerId = CheckRoundWinner(round);
 
-                if (winnerPlayer != null)
+                if (winnerPlayerId.HasValue)
                 {
-                    round.WinnerPlayerId = winnerPlayer.PlayerId;
+                    round.WinnerPlayerId = winnerPlayerId;
                     _repository.Add(round);
 
                     var game = _gameService.UpdateResults(round.GameId);
-                    winnerPlayer.Winner = game.WinnerPlayerId.HasValue
-                            && winnerPlayer.PlayerId == game.WinnerPlayerId;
+
+                    winnerPlayer = new Player();
+                    winnerPlayer.PlayerId = winnerPlayerId.Value;
+                    winnerPlayer.Winner = (game.WinnerPlayerId.HasValue
+                       && winnerPlayerId == game.WinnerPlayerId);
+
                 }
             }
             else
@@ -50,13 +54,13 @@ namespace GameOfDrones.Services
         }
 
 
-        private Player CheckRoundWinner(Round round)
+        private int? CheckRoundWinner(Round round)
         {
             var movesList = round.Moves.ToList();
             var winners = movesList.FindAll(p => movesList.Exists(m => _moveService.Kills(p.MoveId.Value, m.MoveId.Value)));
 
             if (winners != null && winners.Count == 1)
-                return winners.FirstOrDefault().Player;
+                return winners.FirstOrDefault().PlayerId;
             else return null;
         }
     }

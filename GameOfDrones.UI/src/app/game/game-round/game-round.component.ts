@@ -61,11 +61,11 @@ import { PlayerMove } from './../../../models/PlayerMove';
 	}
 	setNewMove() {
 		this.currentPlayer++;
-		this.currentMove = Observable.of(new PlayerMove(this.currentGame.players[this.currentPlayer - 1]));
 
+		this.currentMove = Observable.of(new PlayerMove(this.currentGame.players[this.currentPlayer - 1]));
 		this.currentMove.subscribe(
 			data => {
-				this.currentRound.moves.push(data);
+				this.currentRound.moves.push(new PlayerMove(null, data.roundId, data.playerId, data.moveId));
 			});
 	}
 
