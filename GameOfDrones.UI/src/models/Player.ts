@@ -1,12 +1,10 @@
-import { IPlayer } from './../interfaces/IPlayer';
+export class Player {
+	constructor(number: number) {
+		this.number = number;
+	}
 
-export class Player implements IPlayer{
-    constructor(number: number) {
-        this.number = number;
-    }
-
-	id: string;
-    number: number;
+	playerId: string;
+	number: number;
 	name: string;
 	winner: boolean;
 }

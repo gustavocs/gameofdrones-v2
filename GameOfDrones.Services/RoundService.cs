@@ -23,23 +23,34 @@ namespace GameOfDrones.Services
         }
 
 
-        public Round AddWithWinner(Round round)
+        public Player AddWithWinner(Round round)
         {
-            Round roundResult;
+            Player winnerPlayer = new Player();
+
             if (_gameService.GetWinner(round.GameId) == null)
             {
+                var winnerPlayerId = CheckRoundWinner(round);
 
-                round.WinnerPlayerId = CheckRoundWinner(round);
-                roundResult = _repository.Add(round);
+                if (winnerPlayerId.HasValue)
+                {
+                    round.WinnerPlayerId = winnerPlayerId;
+                    _repository.Add(round);
 
-                _gameService.UpdateResults(round.GameId);
+                    var game = _gameService.UpdateResults(round.GameId);
+
+                    winnerPlayer = new Player();
+                    winnerPlayer.PlayerId = winnerPlayerId.Value;
+                    winnerPlayer.Winner = (game.WinnerPlayerId.HasValue
+                       && winnerPlayerId == game.WinnerPlayerId);
+
+                }
             }
             else
             {
                 throw new Exception("This game has already finished!");
             }
         
-            return roundResult;
+            return winnerPlayer;
         }
 
 

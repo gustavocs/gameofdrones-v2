@@ -1,11 +1,9 @@
-import { IGame } from './../interfaces/IGame';
-import { IPlayer } from './../interfaces/IPlayer';
-import { IRound } from './../interfaces/IRound';
+import { Player } from './Player';
+import { Round } from './Round';
 
-export class Game implements IGame
-{
-	id: string;
-    players: Array<IPlayer>;
-	rounds: Array<IRound>;
-	winner: IPlayer;
+export class Game {
+	gameId: string;
+	players: Array<Player>;
+	rounds: Array<Round>;
+	winner: Player;
 }

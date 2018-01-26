@@ -32,7 +32,11 @@ namespace GameOfDrones.WebAPI
             services.AddCors();
             services.AddMvc();
 
-            services.AddDbContext<DataContext>(options => options.UseSqlServer(connection, b => b.MigrationsAssembly("GameOfDrones.WebAPI")));
+            services
+                .AddEntityFrameworkNpgsql()
+                .AddDbContext<DataContext>(
+                    options => options.UseNpgsql(connection, b => b.MigrationsAssembly("GameOfDrones.WebAPI")));
+            
             services.AddScoped<IDbContext, DataContext>();
 
             services.AddTransient<IGameService, GameService>();
